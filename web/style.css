@@ -408,3 +408,85 @@ body {
 .hidden {
     display: none;
 }
+
+/* Колесо Фортуны */
+.wheel-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.wheel-pointer {
+    position: absolute;
+    top: -10px;
+    font-size: 40px;
+    color: var(--accent);
+    z-index: 10;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+#wheelCanvas {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Мины */
+.mines-info {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: var(--slot-bg);
+    border-radius: 12px;
+}
+
+.mines-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.mines-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.mine-cell {
+    aspect-ratio: 1;
+    background: var(--slot-bg);
+    border: 2px solid var(--accent);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.mine-cell:hover:not(.revealed):not(.disabled) {
+    background: var(--accent);
+    transform: scale(1.05);
+}
+
+.mine-cell.revealed {
+    background: var(--bg-primary);
+    cursor: default;
+    border-color: #10b981;
+}
+
+.mine-cell.mine {
+    background: #ef4444;
+    border-color: #dc2626;
+}
+
+.mine-cell.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
