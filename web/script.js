@@ -22,12 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const increaseBet = document.getElementById('increaseBet');
     const spinBtn = document.getElementById('spinBtn');
     
-    if (addCoinsBtn) addCoinsBtn// Инициализация Telegram Web App
-let tg = window.Telegram?.WebApp;
-if (tg) {
-    tg.expand();
-    tg.ready();
-}
+    if (addCoinsBtn) addCoinsBtn.addEventListener('click', addCoins);
+    if (decreaseBet) decreaseBet.addEventListener('click', () => changeBet(-10));
+    if (increaseBet) increaseBet.addEventListener('click', () => changeBet(10));
+    if (spinBtn) spinBtn.addEventListener('click', spin);
+    
+    console.log('✅ Все обработчики событий подключены');
+})
 
 // Состояние игры
 const gameState = {
