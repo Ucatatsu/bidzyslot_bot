@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casino Bot</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="light">
+    <!-- Главное меню -->
+    <div id="mainMenu" class="main-menu">
+        <h1 class="menu-title">🎰 CASINO</h1>
+        <p class="menu-subtitle">Добро пожаловать в казино!</p>
+        
+        <div class="menu-stats">
+            <h3>📊 Твоя статистика</h3>
+            <div class="stat-row">
+                <span class="stat-label">💰 Баланс:</span>
+                <span class="stat-value" id="menuBalance">1000</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">🎰 Всего спинов:</span>
+                <span class="stat-value" id="menuSpins">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">🏆 Выигрышей:</span>
+                <span class="stat-value" id="menuWins">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">💎 Лучший выигрыш:</span>
+                <span class="stat-value" id="menuBiggest">0</span>
+            </div>
+        </div>
+
+        <div class="menu-games">
+            <div class="game-card active" id="playSlotsBtn">
+                <h3>🎰 Слоты</h3>
+                <p>Классический игровой автомат</p>
+                <span class="game-status">Доступно</span>
+            </div>
+            
+            <div class="game-card">
+                <h3>🎲 Рулетка</h3>
+                <p>Испытай свою удачу</p>
+                <span class="game-status soon">Скоро</span>
+            </div>
+            
+            <div class="game-card">
+                <h3>🃏 Блэкджек</h3>
+                <p>Набери 21 очко</p>
+                <span class="game-status soon">Скоро</span>
+            </div>
+        </div>
+
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+    </div>
+
+    <!-- Игровая секция -->
+    <div id="gameSection" class="hidden">
+        <div class="header">
+            <button class="back-btn" id="backBtn">←</button>
+            <div class="balance-container">
+                <div class="balance">💰 <span id="balance">1000</span></div>
+                <button class="add-coins-btn" id="addCoinsBtn">+</button>
+            </div>
+        </div>
+
+        <div class="casino-container">
+            <div class="slot-machine">
+                <div class="slot">
+                    <div class="slot-inner" id="slot1">🍒</div>
+                </div>
+                <div class="slot">
+                    <div class="slot-inner" id="slot2">🍋</div>
+                </div>
+                <div class="slot">
+                    <div class="slot-inner" id="slot3">🍊</div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="bet-container">
+                    <div class="bet-label">Ставка</div>
+                    <div class="bet-controls">
+                        <button class="bet-btn" id="decreaseBet">−</button>
+                        <div class="bet-amount" id="betAmount">10</div>
+                        <button class="bet-btn" id="increaseBet">+</button>
+                    </div>
+                </div>
+                <button class="spin-btn" id="spinBtn">🎰 КРУТИТЬ</button>
+            </div>
+
+            <div class="message" id="message"></div>
+        </div>
+    </div>
+
+    <script>
+        // Инициализация Telegram Web App
+        let tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.expand();
+            tg.ready();
+        }
+
+        // Состояние игры
+        const gameState = {
+            balance: 1000,
+            bet: 10,
+            isSpinning: false,
+            totalSpins: 0,
+            totalWins: 0,
+            biggestWin: 0,
+            currentPage: 'menu'
+        };
+
+        // Символы для слотов
+        const symbols = ['🍒', '🍋', '🍊', '🍇', '🍉', '⭐', '💎'];
+
+        // Загрузка сохраненных данных
+        function loadGame() {
+            const saved = localStorage.getItem('casinoGame');
+            if (saved) {
+                const data = JSON.parse(saved);
+                Object.assign(gameState, data);
+            }
+            
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.body.setAttribute('data-theme', savedTheme);
+                document.getElementById('themeToggle').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+            }
+            
+            updateUI();
+        }
+
+        // Сохранение данных
+        function saveGame() {
+            localStorage.setItem('casinoGame', JSON.stringify({
+                balance: gameState.balance,
+                bet: gameState.bet,
+                totalSpins: gameState.totalSpins,
+                totalWins: gameState.totalWins,
+                biggestWin: gameState.biggestWin
+            }));
+        }
+
+        // Обновление UI
+        function updateUI() {
+            const balanceEl = document.getElementById('balance');
+            const betAmountEl = document.getElementById('betAmount');
+            
+            if (balanceEl) balanceEl.textContent = gameState.balance;
+            if (betAmountEl) betAmountEl.textContent = gameState.bet;
+            
+            updateMenuStats();
+        }
+
+        // Обновление статистики в меню
+        function updateMenuStats() {
+            const menuBalance = document.getElementById('menuBalance');
+            const menuSpins = document.getElementById('menuSpins');
+            const menuWins = document.getElementById('menuWins');
+            const menuBiggest = document.getElementById('menuBiggest');
+            
+            if (menuBalance) menuBalance.textContent = gameState.balance;
+            if (menuSpins) menuSpins.textContent = gameState.totalSpins;
+            if (menuWins) menuWins.textContent = gameState.totalWins;
+            if (menuBiggest) menuBiggest.textContent = gameState.biggestWin;
+        }
+
+        // Навигация
+        function showPage(page) {
+            gameState.currentPage = page;
+            
+            const menu = document.getElementById('mainMenu');
+            const game = document.getElementById('gameSection');
+            
+            if (page === 'menu') {
+                menu.classList.remove('hidden');
+                game.classList.add('hidden');
+                updateMenuStats();
+            } else {
+                menu.classList.add('hidden');
+                game.classList.remove('hidden');
+                updateUI();
+            }
+        }
+
+        // Смена темы
+        function toggleTheme() {
+            const currentTheme = document.body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.body.setAttribute('data-theme', newTheme);
+            document.getElementById('themeToggle').textContent = newTheme === 'dark' ? '☀️' : '🌙';
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Добавить монеты
+        function addCoins() {
+            gameState.balance += 1000;
+            updateUI();
+            saveGame();
+            showCoinAnimation();
+            showMessage('+ 1000 монет! 🎉', 'win');
+        }
+
+        // Анимация монет
+        function showCoinAnimation() {
+            const addBtn = document.getElementById('addCoinsBtn');
+            const coin = document.createElement('div');
+            coin.className = 'coin-animation';
+            coin.textContent = '🪙';
+            coin.style.left = addBtn.offsetLeft + 'px';
+            coin.style.top = addBtn.offsetTop + 'px';
+            document.body.appendChild(coin);
+            setTimeout(() => coin.remove(), 1000);
+        }
+
+        // Изменение ставки
+        function changeBet(delta) {
+            const newBet = gameState.bet + delta;
+            if (newBet >= 10 && newBet <= 100 && newBet <= gameState.balance) {
+                gameState.bet = newBet;
+                updateUI();
+            }
+        }
+
+        // Показать сообщение
+        function showMessage(text, type = '') {
+            const messageEl = document.getElementById('message');
+            messageEl.textContent = text;
+            messageEl.className = 'message ' + type;
+            setTimeout(() => {
+                messageEl.textContent = '';
+                messageEl.className = 'message';
+            }, 3000);
+        }
+
+        // Функция вращения
+        async function spin() {
+            if (gameState.isSpinning || gameState.balance < gameState.bet) {
+                if (gameState.balance < gameState.bet) {
+                    showMessage('Недостаточно монет! 😢', 'lose');
+                }
+                return;
+            }
+
+            gameState.isSpinning = true;
+            gameState.totalSpins++;
+            document.getElementById('spinBtn').disabled = true;
+            gameState.balance -= gameState.bet;
+            updateUI();
+            saveGame();
+            document.getElementById('message').textContent = '';
+
+            const slot1 = document.getElementById('slot1');
+            const slot2 = document.getElementById('slot2');
+            const slot3 = document.getElementById('slot3');
+            const slots = [slot1, slot2, slot3];
+            
+            const intervals = [];
+            
+            slots.forEach((slot) => {
+                slot.parentElement.classList.add('spinning');
+                
+                const interval = setInterval(() => {
+                    slot.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                }, 100);
+                
+                intervals.push(interval);
+            });
+
+            setTimeout(() => {
+                clearInterval(intervals[0]);
+                slot1.parentElement.classList.remove('spinning');
+                slot1.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+            }, 1500);
+
+            setTimeout(() => {
+                clearInterval(intervals[1]);
+                slot2.parentElement.classList.remove('spinning');
+                slot2.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+            }, 2000);
+
+            setTimeout(() => {
+                clearInterval(intervals[2]);
+                slot3.parentElement.classList.remove('spinning');
+                slot3.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                checkWin();
+            }, 2500);
+        }
+
+        // Проверка выигрыша
+        function checkWin() {
+            const symbol1 = document.getElementById('slot1').textContent;
+            const symbol2 = document.getElementById('slot2').textContent;
+            const symbol3 = document.getElementById('slot3').textContent;
+
+            let winAmount = 0;
+
+            if (symbol1 === symbol2 && symbol2 === symbol3) {
+                if (symbol1 === '💎') {
+                    winAmount = gameState.bet * 10;
+                } else if (symbol1 === '⭐') {
+                    winAmount = gameState.bet * 7;
+                } else {
+                    winAmount = gameState.bet * 5;
+                }
+            } else if (symbol1 === symbol2 || symbol2 === symbol3 || symbol1 === symbol3) {
+                winAmount = gameState.bet * 2;
+            }
+
+            if (winAmount > 0) {
+                gameState.balance += winAmount;
+                gameState.totalWins++;
+                if (winAmount > gameState.biggestWin) {
+                    gameState.biggestWin = winAmount;
+                }
+                updateUI();
+                saveGame();
+                showMessage(`Выигрыш: ${winAmount} монет! 🎉`, 'win');
+            } else {
+                showMessage('Не повезло! Попробуй еще! 😔', 'lose');
+                saveGame();
+            }
+
+            gameState.isSpinning = false;
+            document.getElementById('spinBtn').disabled = false;
+        }
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', () => {
+            loadGame();
+            
+            document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
+            document.getElementById('addCoinsBtn')?.addEventListener('click', addCoins);
+            document.getElementById('decreaseBet')?.addEventListener('click', () => changeBet(-10));
+            document.getElementById('increaseBet')?.addEventListener('click', () => changeBet(10));
+            document.getElementById('spinBtn')?.addEventListener('click', spin);
+            document.getElementById('backBtn')?.addEventListener('click', () => showPage('menu'));
+            document.getElementById('playSlotsBtn')?.addEventListener('click', () => showPage('slots'));
+        });
+    </script>
+</body>
+</html>
