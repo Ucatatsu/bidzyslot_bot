@@ -11,7 +11,7 @@ logging.basicConfig(
 # Укажи свой токен бота
 BOT_TOKEN = "8234769062:AAHtki4WnMnvN31hDVYWO55fD6lMxmYCYQU"
 # URL где будет размещено веб-приложение
-WEB_APP_URL = "https://bidzyslot-bot.vercel.app/"
+WEB_APP_URL = "https://ucatatsu.github.io/bidzyslot_bot/"
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Отправляет приветственное сообщение с кнопкой для открытия веб-приложения"""
