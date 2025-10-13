@@ -6,64 +6,185 @@
     <title>Casino Bot</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="style.css">
 </head>
 <body data-theme="light">
     <!-- Главное меню -->
     <div id="mainMenu" class="main-menu">
-        <h1 class="menu-title">🎰 CASINO</h1>
-        <p class="menu-subtitle">Добро пожаловать в казино!</p>
+        <div class="menu-header">
+            <h1 class="menu-title">🎰 CASINO</h1>
+            <div class="menu-controls">
+                <div class="balance-display">💰 <span id="menuBalanceTop">1000</span></div>
+                <button class="icon-btn" id="achievementsBtn" title="Достижения">🏆</button>
+                <button class="icon-btn" id="statsBtn" title="Статистика">📊</button>
+                <button class="icon-btn" id="settingsBtn" title="Настройки">⚙️</button>
+            </div>
+        </div>
         
-        <div class="menu-stats">
-            <h3>📊 Твоя статистика</h3>
-            <div class="stat-row">
-                <span class="stat-label">💰 Баланс:</span>
-                <span class="stat-value" id="menuBalance">1000</span>
+        <p class="menu-subtitle">Добро пожаловать в казино!</p>
+
+        <!-- Уровень игрока -->
+        <div class="player-level fade-in">
+            <div class="level-info">
+                <span class="level-badge">🎯 Уровень <span id="playerLevel">1</span></span>
+                <span class="level-xp"><span id="currentXP">0</span> / <span id="maxXP">100</span> XP</span>
             </div>
-            <div class="stat-row">
-                <span class="stat-label">🎰 Всего спинов:</span>
-                <span class="stat-value" id="menuSpins">0</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">🏆 Выигрышей:</span>
-                <span class="stat-value" id="menuWins">0</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">💎 Лучший выигрыш:</span>
-                <span class="stat-value" id="menuBiggest">0</span>
+            <div class="xp-bar">
+                <div class="xp-progress" id="xpProgress" style="width: 0%"></div>
             </div>
         </div>
 
         <div class="menu-games">
-            <div class="game-card active" id="playSlotsBtn">
-                <h3>🎰 Слоты</h3>
+            <div class="game-card fade-in" id="playSlotsBtn" style="animation-delay: 0.1s">
+                <div class="game-icon">🎰</div>
+                <h3>Слоты</h3>
                 <p>Классический игровой автомат</p>
-                <span class="game-status">Доступно</span>
             </div>
             
-            <div class="game-card active" id="playWheelBtn">
-                <h3>🎡 Колесо Фортуны</h3>
-                <p>Крути колесо и выигрывай!</p>
-                <span class="game-status">Доступно</span>
+            <div class="game-card fade-in" id="playWheelBtn" style="animation-delay: 0.2s">
+                <div class="game-icon">🎡</div>
+                <h3>Рулетка</h3>
+                <p>Красное, чёрное или зелёное?</p>
             </div>
             
-            <div class="game-card active" id="playMinesBtn">
-                <h3>💣 Мины</h3>
+            <div class="game-card fade-in" id="playMinesBtn" style="animation-delay: 0.3s">
+                <div class="game-icon">💣</div>
+                <h3>Мины</h3>
                 <p>Найди сокровища, избегая мин</p>
-                <span class="game-status">Доступно</span>
             </div>
         </div>
+    </div>
 
-        <button class="theme-toggle" id="themeToggle">🌙</button>
+    <!-- Модальное окно настроек -->
+    <div id="settingsModal" class="modal hidden">
+        <div class="modal-content settings-modal">
+            <div class="modal-header">
+                <h2>⚙️ Настройки</h2>
+                <button class="close-btn" id="closeSettingsBtn">✕</button>
+            </div>
+            
+            <!-- Выбор темы -->
+            <div class="settings-section">
+                <h3 class="settings-title">🎨 Тема оформления</h3>
+                <div class="theme-options">
+                    <div class="theme-card" data-theme="light">
+                        <div class="theme-preview light-preview">
+                            <div class="preview-bar"></div>
+                            <div class="preview-content"></div>
+                        </div>
+                        <span class="theme-name">Светлая</span>
+                        <div class="theme-check">✓</div>
+                    </div>
+                    <div class="theme-card" data-theme="dark">
+                        <div class="theme-preview dark-preview">
+                            <div class="preview-bar"></div>
+                            <div class="preview-content"></div>
+                        </div>
+                        <span class="theme-name">Тёмная</span>
+                        <div class="theme-check">✓</div>
+                    </div>
+                    <div class="theme-card" data-theme="oled">
+                        <div class="theme-preview oled-preview">
+                            <div class="preview-bar"></div>
+                            <div class="preview-content"></div>
+                        </div>
+                        <span class="theme-name">OLED</span>
+                        <div class="theme-check">✓</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Выбор языка -->
+            <div class="settings-section">
+                <h3 class="settings-title">🌐 Язык</h3>
+                <div class="language-options">
+                    <div class="language-card" data-lang="ru">
+                        <span class="language-flag">🇷🇺</span>
+                        <span class="language-name">Русский</span>
+                        <div class="language-check">✓</div>
+                    </div>
+                    <div class="language-card" data-lang="en">
+                        <span class="language-flag">🇬🇧</span>
+                        <span class="language-name">English</span>
+                        <div class="language-check">✓</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно достижений -->
+    <div id="achievementsModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🏆 Достижения</h2>
+                <button class="close-btn" id="closeAchievementsBtn">✕</button>
+            </div>
+            <div class="achievements-grid" id="achievementsGrid">
+                <!-- Заполняется через JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно статистики -->
+    <div id="statsModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📊 Твоя статистика</h2>
+                <button class="close-btn" id="closeStatsBtn">✕</button>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-info">
+                        <div class="stat-label">Баланс</div>
+                        <div class="stat-value" id="modalBalance">1000</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎰</div>
+                    <div class="stat-info">
+                        <div class="stat-label">Всего игр</div>
+                        <div class="stat-value" id="modalSpins">0</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-info">
+                        <div class="stat-label">Выигрышей</div>
+                        <div class="stat-value" id="modalWins">0</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💎</div>
+                    <div class="stat-info">
+                        <div class="stat-label">Лучший выигрыш</div>
+                        <div class="stat-value" id="modalBiggest">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- История игр -->
+            <div class="game-history">
+                <h3>📜 История последних игр</h3>
+                <div id="historyList" class="history-list">
+                    <p class="empty-history">История пуста</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Игровая секция -->
     <div id="gameSection" class="hidden">
         <div class="header">
-            <button class="back-btn" id="backBtn">←</button>
-            <div class="balance-container">
-                <div class="balance">💰 <span id="balance">1000</span></div>
-                <button class="add-coins-btn" id="addCoinsBtn">+</button>
+            <button class="back-btn" id="backBtn">← Назад</button>
+            <div class="header-right">
+                <div class="balance-container">
+                    <div class="balance">💰 <span id="balance">1000</span></div>
+                    <button class="add-coins-btn" id="addCoinsBtn">+</button>
+                </div>
+                <button class="icon-btn" id="achievementsBtn2" title="Достижения">🏆</button>
+                <button class="icon-btn" id="statsBtn2" title="Статистика">📊</button>
+                <button class="icon-btn" id="settingsBtn2" title="Настройки">⚙️</button>
             </div>
         </div>
 
@@ -71,7 +192,7 @@
         <div id="slotsGame" class="casino-container hidden">
             <div class="slot-machine">
                 <div class="slot">
-                    <div class="slot-inner" id="slot1">🍒</div>
+                    <div class="slot-inner" id="slot1">🍎</div>
                 </div>
                 <div class="slot">
                     <div class="slot-inner" id="slot2">🍋</div>
@@ -96,11 +217,28 @@
             <div class="message" id="message"></div>
         </div>
 
-        <!-- Колесо Фортуны -->
+        <!-- Рулетка -->
         <div id="wheelGame" class="casino-container hidden">
-            <div class="wheel-container">
-                <div class="wheel-pointer">▼</div>
-                <canvas id="wheelCanvas" width="350" height="350"></canvas>
+            <div class="roulette-container">
+                <div class="roulette-wheel" id="rouletteWheel">
+                    <div class="roulette-ball" id="rouletteBall"></div>
+                    <div class="roulette-number" id="rouletteNumber">?</div>
+                </div>
+            </div>
+
+            <div class="roulette-bets">
+                <button class="roulette-bet-btn red" id="betRed">
+                    <span class="bet-label-text">КРАСНОЕ</span>
+                    <span class="bet-multiplier">x2</span>
+                </button>
+                <button class="roulette-bet-btn green" id="betGreen">
+                    <span class="bet-label-text">ЗЕЛЁНОЕ (0)</span>
+                    <span class="bet-multiplier">x14</span>
+                </button>
+                <button class="roulette-bet-btn black" id="betBlack">
+                    <span class="bet-label-text">ЧЁРНОЕ</span>
+                    <span class="bet-multiplier">x2</span>
+                </button>
             </div>
 
             <div class="controls">
@@ -112,7 +250,6 @@
                         <button class="bet-btn" id="wheelIncreaseBet">+</button>
                     </div>
                 </div>
-                <button class="spin-btn" id="wheelSpinBtn">🎡 КРУТИТЬ КОЛЕСО</button>
             </div>
 
             <div class="message" id="wheelMessage"></div>
