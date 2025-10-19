@@ -399,147 +399,151 @@ body {
     transform: scale(0.95);
 }
 
-/* Контейнер казино */
+/* ===== АРКАДНЫЙ ДИЗАЙН ДЛЯ СЛОТОВ ===== */
 .casino-container {
-    background: var(--bg-secondary);
-    padding: 40px 30px;
+    background: linear-gradient(135deg, #1a0a2e 0%, #2d1b69 50%, #1a0a2e 100%);
+    padding: 30px 20px;
     border-radius: 20px;
-    box-shadow: 0 8px 32px var(--shadow);
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.8),
+        inset 0 0 80px rgba(138, 43, 226, 0.3),
+        0 0 40px rgba(138, 43, 226, 0.5);
     max-width: 400px;
     width: 100%;
-}
-
-.slot-machine {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    margin-bottom: 30px;
-}
-
-.slot {
-    width: 90px;
-    height: 120px;
-    background: var(--slot-bg);
-    border: 3px solid var(--accent);
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 50px;
-    overflow: hidden;
+    border: 4px solid #8a2be2;
     position: relative;
-    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 
-.slot-inner {
-    transition: transform 0.1s ease-out;
+/* Неоновая подсветка */
+.casino-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(138, 43, 226, 0.1) 2px,
+        rgba(138, 43, 226, 0.1) 4px
+    );
+    animation: scan 8s linear infinite;
+    pointer-events: none;
 }
 
-.slot.spinning .slot-inner {
-    animation: spin 0.1s linear infinite;
-}
-
-@keyframes spin {
+@keyframes scan {
     0% { transform: translateY(0); }
-    100% { transform: translateY(-100px); }
+    100% { transform: translateY(50%); }
 }
 
-.controls {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.bet-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.bet-label {
-    font-size: 14px;
-    color: var(--text-secondary);
-    text-align: center;
-}
-
-.bet-controls {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-}
-
-.bet-btn {
-    background: var(--accent);
-    color: white;
-    border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    font-size: 20px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.bet-btn:hover {
-    background: var(--accent-hover);
-}
-
-.bet-btn:active {
-    transform: scale(0.9);
-}
-
-.bet-amount {
-    font-size: 24px;
+/* Декоративные элементы аркадного автомата */
+.casino-container::after {
+    content: '🎮 ARCADE 🎮';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
     font-weight: bold;
-    min-width: 80px;
-    text-align: center;
-    color: var(--accent);
+    color: #ffd700;
+    text-shadow: 
+        0 0 10px #ffd700,
+        0 0 20px #ffd700,
+        0 2px 5px rgba(0, 0, 0, 0.8);
+    filter: drop-shadow(0 0 10px #ffd700);
 }
 
 .spin-btn {
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+    background: linear-gradient(135deg, #ff00ff 0%, #8a2be2 50%, #4b0082 100%);
     color: white;
-    border: none;
+    border: 3px solid #ffd700;
     padding: 18px 40px;
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 22px;
+    font-weight: 900;
     border-radius: 15px;
     cursor: pointer;
     transition: all 0.3s;
-    box-shadow: 0 6px 20px var(--shadow);
+    box-shadow: 
+        0 8px 25px rgba(138, 43, 226, 0.6),
+        inset 0 2px 0 rgba(255, 255, 255, 0.3),
+        0 0 30px rgba(255, 0, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.spin-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.spin-btn:hover::before {
+    left: 100%;
 }
 
 .spin-btn:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px var(--shadow);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 
+        0 12px 35px rgba(138, 43, 226, 0.8),
+        inset 0 2px 0 rgba(255, 255, 255, 0.4),
+        0 0 40px rgba(255, 0, 255, 0.7);
 }
 
 .spin-btn:active:not(:disabled) {
-    transform: translateY(0);
+    transform: translateY(0) scale(0.98);
 }
 
 .spin-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    animation: pulse-disabled 1s ease-in-out infinite;
+}
+
+@keyframes pulse-disabled {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.3; }
 }
 
 .message {
     text-align: center;
     margin-top: 20px;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
     min-height: 30px;
-    color: var(--accent);
+    color: #ffd700;
+    text-shadow: 0 0 10px currentColor;
+    position: relative;
+    z-index: 2;
 }
 
 .message.win {
-    color: #10b981;
-    animation: pulse 0.5s ease-in-out;
+    color: #00ff00;
+    animation: win-pulse 0.5s ease-in-out;
+    text-shadow: 
+        0 0 20px #00ff00,
+        0 0 40px #00ff00;
 }
 
 .message.lose {
-    color: #ef4444;
+    color: #ff0000;
+    text-shadow: 
+        0 0 20px #ff0000,
+        0 0 40px #ff0000;
+}
+
+@keyframes win-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
 }
 
 @keyframes pulse {
@@ -569,97 +573,20 @@ body {
     display: none;
 }
 
-/* Рулетка */
-.roulette-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 30px;
-    padding: 20px;
-}
-
-.roulette-wheel {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-    border: 8px solid var(--accent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.5);
-    transition: transform 0.3s;
-}
-
-.roulette-wheel::before {
-    content: '';
-    position: absolute;
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    background: conic-gradient(
-        from 0deg,
-        #ef4444 0deg 25.7deg,
-        #1a1a1a 25.7deg 51.4deg,
-        #ef4444 51.4deg 77.1deg,
-        #1a1a1a 77.1deg 102.8deg,
-        #ef4444 102.8deg 128.5deg,
-        #1a1a1a 128.5deg 154.2deg,
-        #ef4444 154.2deg 180deg,
-        #1a1a1a 180deg 205.7deg,
-        #ef4444 205.7deg 231.4deg,
-        #1a1a1a 231.4deg 257.1deg,
-        #ef4444 257.1deg 282.8deg,
-        #1a1a1a 282.8deg 308.5deg,
-        #ef4444 308.5deg 334.2deg,
-        #1a1a1a 334.2deg 360deg
-    );
-    animation: rotate-wheel 3s linear infinite;
-}
-
-@keyframes rotate-wheel {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-.roulette-wheel.spinning::before {
-    animation: rotate-wheel 0.1s linear infinite;
-}
-
-.roulette-number {
-    position: relative;
-    z-index: 2;
-    font-size: 48px;
-    font-weight: bold;
-    color: white;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-}
-
-.roulette-ball {
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    background: white;
-    border-radius: 50%;
-    top: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-    z-index: 3;
-}
-
+/* Рулетка - кнопки ставок */
 .roulette-bets {
     display: grid;
     grid-template-columns: 1fr;
     gap: 12px;
     margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
 }
 
 .roulette-bet-btn {
     padding: 20px;
     border: 3px solid;
-    border-radius: 12px;
+    border-radius: 15px;
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
@@ -668,39 +595,76 @@ body {
     justify-content: space-between;
     align-items: center;
     color: white;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.roulette-bet-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.roulette-bet-btn:hover::before {
+    left: 100%;
 }
 
 .roulette-bet-btn.red {
     background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-    border-color: #991b1b;
+    border-color: #ffd700;
+    box-shadow: 
+        0 5px 20px rgba(239, 68, 68, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .roulette-bet-btn.red:hover {
     background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+    box-shadow: 
+        0 8px 30px rgba(239, 68, 68, 0.8),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 0 30px rgba(239, 68, 68, 0.6);
 }
 
 .roulette-bet-btn.black {
     background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
-    border-color: #404040;
+    border-color: #ffd700;
+    box-shadow: 
+        0 5px 20px rgba(0, 0, 0, 0.8),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .roulette-bet-btn.black:hover {
     background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+    box-shadow: 
+        0 8px 30px rgba(0, 0, 0, 0.9),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 0 30px rgba(255, 255, 255, 0.3);
 }
 
 .roulette-bet-btn.green {
     background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    border-color: #047857;
+    border-color: #ffd700;
+    box-shadow: 
+        0 5px 20px rgba(16, 185, 129, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .roulette-bet-btn.green:hover {
     background: linear-gradient(135deg, #059669 0%, #047857 100%);
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+    box-shadow: 
+        0 8px 30px rgba(16, 185, 129, 0.8),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 0 30px rgba(16, 185, 129, 0.6);
 }
 
 .roulette-bet-btn:active {
@@ -715,13 +679,19 @@ body {
 
 .bet-label-text {
     flex: 1;
+    font-weight: 900;
 }
 
 .bet-multiplier {
-    font-size: 22px;
-    padding: 5px 12px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
+    font-size: 24px;
+    font-weight: 900;
+    padding: 5px 15px;
+    background: rgba(255, 215, 0, 0.3);
+    border-radius: 10px;
+    border: 2px solid #ffd700;
+    box-shadow: 
+        0 0 10px rgba(255, 215, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 /* Мины */
@@ -730,8 +700,11 @@ body {
     justify-content: space-around;
     margin-bottom: 20px;
     padding: 15px;
-    background: var(--slot-bg);
+    background: rgba(138, 43, 226, 0.2);
     border-radius: 12px;
+    border: 2px solid #8a2be2;
+    position: relative;
+    z-index: 2;
 }
 
 .mines-stat {
@@ -741,17 +714,33 @@ body {
     gap: 5px;
 }
 
+.mines-stat .stat-label {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.mines-stat .stat-value {
+    color: #ffd700;
+    font-size: 20px;
+    font-weight: 900;
+    text-shadow: 0 0 10px #ffd700;
+}
+
 .mines-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 8px;
     margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
 }
 
 .mine-cell {
     aspect-ratio: 1;
-    background: var(--slot-bg);
-    border: 2px solid var(--accent);
+    background: linear-gradient(135deg, #2d1b69 0%, #1a0a2e 100%);
+    border: 3px solid #8a2be2;
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -760,22 +749,63 @@ body {
     cursor: pointer;
     transition: all 0.2s;
     user-select: none;
+    box-shadow: 
+        0 4px 10px rgba(138, 43, 226, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .mine-cell:hover:not(.revealed):not(.disabled) {
-    background: var(--accent);
+    background: linear-gradient(135deg, #8a2be2 0%, #6a1bb2 100%);
     transform: scale(1.05);
+    box-shadow: 
+        0 6px 15px rgba(138, 43, 226, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 0 20px rgba(138, 43, 226, 0.5);
 }
 
 .mine-cell.revealed {
-    background: var(--bg-primary);
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     cursor: default;
-    border-color: #10b981;
+    border-color: #ffd700;
+    animation: reveal-gem 0.4s ease-out;
+    box-shadow: 
+        0 5px 15px rgba(16, 185, 129, 0.6),
+        0 0 25px rgba(16, 185, 129, 0.5);
+}
+
+@keyframes reveal-gem {
+    0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2) rotate(180deg);
+    }
+    100% {
+        transform: scale(1) rotate(360deg);
+        opacity: 1;
+    }
 }
 
 .mine-cell.mine {
-    background: #ef4444;
-    border-color: #dc2626;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    border-color: #ffd700;
+    animation: explode 0.5s ease-out;
+    box-shadow: 
+        0 5px 20px rgba(239, 68, 68, 0.8),
+        0 0 30px rgba(239, 68, 68, 0.6);
+}
+
+@keyframes explode {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.3);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 .mine-cell.disabled {
@@ -893,7 +923,6 @@ body {
     font-size: 18px;
 }
 
-/* Адаптив для мобильных */
 @media (max-width: 480px) {
     .achievement-notification {
         right: 10px;
@@ -1174,69 +1203,230 @@ body {
 
 /* Карточки языков */
 .language-options {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
+    display: flex;
+    gap: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 4px;
+    position: relative;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .language-options,
+[data-theme="oled"] .language-options {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.language-options::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    height: calc(100% - 8px);
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(255, 255, 255, 0.85) 100%
+    );
+    border-radius: 16px;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.15),
+        0 1px 2px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    z-index: 1;
+}
+
+[data-theme="dark"] .language-options::before,
+[data-theme="oled"] .language-options::before {
+    background: linear-gradient(135deg, 
+        rgba(59, 130, 246, 0.8) 0%,
+        rgba(37, 99, 235, 0.9) 100%
+    );
+    box-shadow: 
+        0 2px 8px rgba(59, 130, 246, 0.4),
+        0 1px 2px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.language-options.en-active::before {
+    transform: translateX(calc(100% + 4px));
 }
 
 .language-card {
-    background: var(--bg-secondary);
-    border: 3px solid transparent;
-    border-radius: 15px;
-    padding: 20px;
+    flex: 1;
+    background: transparent;
+    border: none;
+    border-radius: 16px;
+    padding: 12px 24px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
     display: flex;
     align-items: center;
-    gap: 15px;
+    justify-content: center;
+    gap: 8px;
+    z-index: 2;
+    min-height: 48px;
 }
 
 .language-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px var(--shadow);
-}
-
-.language-card.active {
-    border-color: var(--accent);
-    box-shadow: 0 4px 12px var(--shadow);
+    transform: scale(1.02);
+    box-shadow: none;
 }
 
 .language-flag {
-    font-size: 32px;
+    font-size: 20px;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .language-name {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.language-card.active .language-name {
     color: var(--text-primary);
-    flex: 1;
+}
+
+[data-theme="light"] .language-card.active .language-name {
+    color: #1a1a1a;
+}
+
+[data-theme="dark"] .language-card.active .language-name,
+[data-theme="oled"] .language-card.active .language-name {
+    color: #ffffff;
+}
+
+.language-card.active .language-flag {
+    transform: scale(1.15);
 }
 
 .language-check {
-    width: 24px;
-    height: 24px;
-    background: var(--accent);
-    color: white;
-    border-radius: 50%;
     display: none;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    font-weight: bold;
 }
 
-.language-card.active .language-check {
-    display: flex;
+.language-card .language-ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(0);
+    animation: language-ripple-animation 0.6s ease-out;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes language-ripple-animation {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+}
+
+.language-transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 99999;
+    overflow: hidden;
+}
+
+.language-transition-overlay::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(
+        circle,
+        rgba(59, 130, 246, 0.15) 0%,
+        rgba(139, 92, 246, 0.1) 30%,
+        rgba(236, 72, 153, 0.08) 60%,
+        transparent 100%
+    );
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: blur(0px);
+}
+
+.language-transition-overlay::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        135deg,
+        rgba(59, 130, 246, 0.03) 0%,
+        rgba(139, 92, 246, 0.02) 50%,
+        rgba(236, 72, 153, 0.03) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(0px);
+}
+
+.language-transition-overlay.active::before {
+    width: 200vmax;
+    height: 200vmax;
+    filter: blur(60px);
+}
+
+.language-transition-overlay.active::after {
+    opacity: 1;
+    backdrop-filter: blur(8px) saturate(120%);
+}
+
+.language-transition-overlay.fade-out::before {
+    width: 0;
+    height: 0;
+    filter: blur(0px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.language-transition-overlay.fade-out::after {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] .language-transition-overlay::before,
+[data-theme="oled"] .language-transition-overlay::before {
+    background: radial-gradient(
+        circle,
+        rgba(59, 130, 246, 0.2) 0%,
+        rgba(139, 92, 246, 0.15) 30%,
+        rgba(236, 72, 153, 0.1) 60%,
+        transparent 100%
+    );
 }
 
 @media (max-width: 480px) {
-    .theme-options {
-        grid-template-columns: 1fr;
+    .language-card {
+        padding: 10px 16px;
+        min-height: 44px;
     }
     
-    .language-options {
-        grid-template-columns: 1fr;
+    .language-name {
+        font-size: 14px;
+    }
+    
+    .language-flag {
+        font-size: 18px;
     }
 }
 
@@ -1308,7 +1498,6 @@ body {
     }
 }
 
-/* Скроллбар для сетки достижений */
 .achievements-grid::-webkit-scrollbar {
     width: 8px;
 }
@@ -1450,7 +1639,6 @@ body {
     transform: translateY(-5px) scale(1.01);
 }
 
-/* Иконка достижения */
 .achievement-card-icon {
     font-size: 56px;
     margin-bottom: 12px;
@@ -1485,7 +1673,6 @@ body {
     transform: scale(1.15);
 }
 
-/* Название достижения */
 .achievement-card-name {
     font-size: 16px;
     font-weight: 800;
@@ -1510,7 +1697,6 @@ body {
     text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
 }
 
-/* Описание достижения */
 .achievement-card-desc {
     font-size: 12px;
     color: #94a3b8;
@@ -1528,7 +1714,6 @@ body {
     color: #e0e7ff;
 }
 
-/* Звездочка для разблокированных */
 .achievement-card.unlocked::after {
     content: '✨';
     position: absolute;
@@ -1618,260 +1803,1756 @@ body {
     text-align: center;
     color: var(--text-secondary);
     padding: 20px;
+    text-shadow: 0 0 10px #ffd700,
+                 0 0 20px #ffd700,
+                 0 0 30px #ff00ff;
+    letter-spacing: 3px;
+    animation: neon-glow 1.5s ease-in-out infinite alternate;
 }
 
-/* Конфетти */
-.confetti {
-    position: fixed;
-    width: 10px;
-    height: 10px;
-    pointer-events: none;
-    z-index: 9999;
-}
-
-@keyframes confetti-fall {
+@keyframes neon-glow {
+    from {
+        text-shadow: 
+            0 0 10px #ffd700,
+            0 0 20px #ffd700,
+            0 0 30px #ff00ff;
+    }
     to {
-        transform: translateY(100vh) rotate(360deg);
+        text-shadow: 
+            0 0 20px #ffd700,
+            0 0 30px #ffd700,
+            0 0 40px #ff00ff,
+            0 0 50px #ff00ff;
+    }
+}
+
+/* Слот-машина в аркадном стиле */
+.slot-machine {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin: 50px 0 30px;
+    position: relative;
+    padding: 20px;
+    background: linear-gradient(180deg, #0a0015 0%, #1a0530 100%);
+    border-radius: 15px;
+    box-shadow: 
+        inset 0 0 30px rgba(0, 0, 0, 0.8),
+        0 5px 20px rgba(138, 43, 226, 0.6);
+    border: 3px solid #4a0e78;
+}
+
+/* Неоновая рамка вокруг слотов */
+.slot-machine::before {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff);
+    border-radius: 18px;
+    z-index: -1;
+    opacity: 0.5;
+    filter: blur(10px);
+    animation: rotate-border 3s linear infinite;
+}
+
+@keyframes rotate-border {
+    0% { filter: blur(10px) hue-rotate(0deg); }
+    100% { filter: blur(10px) hue-rotate(360deg); }
+}
+
+.slot {
+    width: 90px;
+    height: 120px;
+    background: linear-gradient(180deg, #1a1a2e 0%, #0f0f1e 100%);
+    border: 4px solid #ffd700;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 
+        inset 0 4px 20px rgba(0, 0, 0, 0.9),
+        0 0 20px rgba(255, 215, 0, 0.6),
+        0 5px 15px rgba(0, 0, 0, 0.8);
+}
+
+/* Эффект подсветки слота */
+.slot::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.slot:hover::before {
+    left: 100%;
+}
+
+.slot-inner {
+    transition: transform 0.1s ease-out;
+    filter: drop-shadow(0 0 8px currentColor);
+    animation: symbol-glow 2s ease-in-out infinite;
+}
+
+@keyframes symbol-glow {
+    0%, 100% { filter: drop-shadow(0 0 5px currentColor); }
+    50% { filter: drop-shadow(0 0 15px currentColor); }
+}
+
+.slot.spinning .slot-inner {
+    animation: spin 0.05s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-100px); }
+}
+
+/* ===== РЕАЛИСТИЧНАЯ РУЛЕТКА ===== */
+#wheelGame.casino-container {
+    background: linear-gradient(135deg, #0a3d0a 0%, #1a5c1a 50%, #0a3d0a 100%);
+    border-color: #2d7a2d;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.8),
+        inset 0 0 80px rgba(34, 139, 34, 0.3),
+        0 0 40px rgba(34, 139, 34, 0.5);
+}
+
+#wheelGame.casino-container::after {
+    content: '🎡 ROULETTE 🎡';
+    color: #90ee90;
+    text-shadow: 
+        0 0 10px #90ee90,
+        0 0 20px #90ee90,
+        0 0 30px #228b22;
+}
+
+.roulette-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 30px 20px;
+    position: relative;
+}
+
+/* Стол рулетки */
+.roulette-container::before {
+    content: '';
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle, #1a5c1a 0%, #0a3d0a 100%);
+    border-radius: 50%;
+    box-shadow: 
+        inset 0 0 50px rgba(0, 0, 0, 0.8),
+        0 10px 40px rgba(0, 0, 0, 0.6);
+    z-index: 0;
+}
+
+.roulette-wheel {
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    background: #2d2d2d;
+    border: 12px solid #8b7355;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 
+        0 15px 50px rgba(0, 0, 0, 0.9),
+        inset 0 0 30px rgba(0, 0, 0, 0.8),
+        0 0 30px rgba(139, 115, 85, 0.6);
+    transition: transform 0.1s;
+    z-index: 1;
+}
+
+/* Внешний ободок */
+.roulette-wheel::after {
+    content: '';
+    position: absolute;
+    inset: -20px;
+    border-radius: 50%;
+    border: 4px solid #ffd700;
+    box-shadow: 
+        0 0 20px rgba(255, 215, 0, 0.8),
+        inset 0 0 20px rgba(255, 215, 0, 0.4);
+    animation: wheel-shine 2s ease-in-out infinite;
+}
+
+@keyframes wheel-shine {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+/* Секторы колеса */
+.roulette-wheel::before {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: conic-gradient(
+        from 0deg,
+        #ef4444 0deg, #ef4444 9.73deg,
+        #1a1a1a 9.73deg, #1a1a1a 19.46deg,
+        #ef4444 19.46deg, #ef4444 29.19deg,
+        #1a1a1a 29.19deg, #1a1a1a 38.92deg,
+        #ef4444 38.92deg, #ef4444 48.65deg,
+        #1a1a1a 48.65deg, #1a1a1a 58.38deg,
+        #ef4444 58.38deg, #ef4444 68.11deg,
+        #1a1a1a 68.11deg, #1a1a1a 77.84deg,
+        #ef4444 77.84deg, #ef4444 87.57deg,
+        #1a1a1a 87.57deg, #1a1a1a 97.3deg,
+        #ef4444 97.3deg, #ef4444 107.03deg,
+        #1a1a1a 107.03deg, #1a1a1a 116.76deg,
+        #ef4444 116.76deg, #ef4444 126.49deg,
+        #1a1a1a 126.49deg, #1a1a1a 136.22deg,
+        #ef4444 136.22deg, #ef4444 145.95deg,
+        #1a1a1a 145.95deg, #1a1a1a 155.68deg,
+        #ef4444 155.68deg, #ef4444 165.41deg,
+        #1a1a1a 165.41deg, #1a1a1a 175.14deg,
+        #ef4444 175.14deg, #ef4444 184.87deg,
+        #1a1a1a 184.87deg, #1a1a1a 194.6deg,
+        #ef4444 194.6deg, #ef4444 204.33deg,
+        #1a1a1a 204.33deg, #1a1a1a 214.06deg,
+        #ef4444 214.06deg, #ef4444 223.79deg,
+        #1a1a1a 223.79deg, #1a1a1a 233.52deg,
+        #ef4444 233.52deg, #ef4444 243.25deg,
+        #1a1a1a 243.25deg, #1a1a1a 252.98deg,
+        #ef4444 252.98deg, #ef4444 262.71deg,
+        #1a1a1a 262.71deg, #1a1a1a 272.44deg,
+        #ef4444 272.44deg, #ef4444 282.17deg,
+        #1a1a1a 282.17deg, #1a1a1a 291.9deg,
+        #ef4444 291.9deg, #ef4444 301.63deg,
+        #1a1a1a 301.63deg, #1a1a1a 311.36deg,
+        #ef4444 311.36deg, #ef4444 321.09deg,
+        #1a1a1a 321.09deg, #1a1a1a 330.82deg,
+        #ef4444 330.82deg, #ef4444 340.55deg,
+        #1a1a1a 340.55deg, #1a1a1a 350.28deg,
+        #ef4444 350.28deg, #ef4444 360deg
+    );
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8);
+    z-index: 1;
+}
+
+/* Центральный зеленый сектор (0) */
+.roulette-wheel .roulette-number {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle, #10b981 0%, #059669 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+    font-weight: 900;
+    color: white;
+    text-shadow: 
+        0 3px 10px rgba(0, 0, 0, 0.9),
+        0 0 20px rgba(16, 185, 129, 0.8);
+    z-index: 3;
+    border: 4px solid #ffd700;
+    box-shadow: 
+        0 5px 20px rgba(0, 0, 0, 0.6),
+        0 0 30px rgba(16, 185, 129, 0.6),
+        inset 0 2px 5px rgba(255, 255, 255, 0.3);
+}
+
+/* Шарик рулетки */
+.roulette-ball {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle at 30% 30%, #ffffff, #e5e5e5 50%, #999999);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) translateY(-90px);
+    box-shadow: 
+        0 0 15px rgba(255, 255, 255, 0.9),
+        0 5px 10px rgba(0, 0, 0, 0.5),
+        inset -2px -2px 5px rgba(0, 0, 0, 0.3);
+    z-index: 4;
+    animation: ball-idle 2s ease-in-out infinite;
+}
+
+@keyframes ball-idle {
+    0%, 100% { 
+        transform: translate(-50%, -50%) translateY(-90px);
+        box-shadow: 
+            0 0 15px rgba(255, 255, 255, 0.9),
+            0 5px 10px rgba(0, 0, 0, 0.5);
+    }
+    50% { 
+        transform: translate(-50%, -50%) translateY(-93px);
+        box-shadow: 
+            0 0 20px rgba(255, 255, 255, 1),
+            0 8px 15px rgba(0, 0, 0, 0.6);
+    }
+}
+
+/* Вращение колеса */
+.roulette-wheel.spinning::before {
+    animation: wheel-spin 3s cubic-bezier(0.17, 0.67, 0.38, 0.98) forwards;
+}
+
+@keyframes wheel-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(1800deg); }
+}
+
+/* Вращение шарика в противоположную сторону */
+@keyframes ball-spin-roulette {
+    0% { 
+        transform: translate(-50%, -50%) rotate(0deg) translateY(-90px) rotate(0deg);
+    }
+    70% {
+        transform: translate(-50%, -50%) rotate(-1440deg) translateY(-90px) rotate(1440deg);
+    }
+    85% {
+        transform: translate(-50%, -50%) rotate(-1620deg) translateY(-70px) rotate(1620deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(-1800deg) translateY(-40px) rotate(1800deg);
+    }
+}
+
+/* Кнопки ставок */
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.bet-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.bet-label {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+.bet-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.bet-btn {
+    background: linear-gradient(135deg, #8a2be2 0%, #6a1bb2 100%);
+    color: white;
+    border: 2px solid #b452ff;
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 
+        0 5px 15px rgba(138, 43, 226, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.bet-btn:hover {
+    background: linear-gradient(135deg, #9d3ef5 0%, #7d2ec5 100%);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 8px 20px rgba(138, 43, 226, 0.7),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.bet-btn:active {
+    transform: translateY(0px) scale(0.95);
+}
+
+.bet-amount {
+    font-size: 32px;
+    font-weight: 900;
+    min-width: 100px;
+    text-align: center;
+    color: #ffd700;
+    text-shadow: 
+        0 0 10px #ffd700,
+        0 0 20px #ffd700,
+        0 2px 5px rgba(0, 0, 0, 0.8);
+    filter: drop-shadow(0 0 10px #ffd700);
+}
+
+/* ===== УЛУЧШЕННЫЕ АНИМАЦИИ ВЫИГРЫША ===== */
+
+/* Взрывная волна при выигрыше */
+@keyframes win-explosion {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(3);
         opacity: 0;
     }
 }
 
-/* Игра в кости */
-.dice-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-bottom: 30px;
-    padding: 20px;
-}
-
-.dice {
-    width: 80px;
-    height: 80px;
-    background: white;
-    border: 3px solid var(--accent);
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 12px var(--shadow);
-    transition: transform 0.3s;
-}
-
-.dice.rolling {
-    animation: diceRoll 0.5s ease-in-out infinite;
-}
-
-@keyframes diceRoll {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(90deg); }
-    50% { transform: rotate(180deg); }
-    75% { transform: rotate(270deg); }
-}
-
-.dice-face {
-    font-size: 48px;
-}
-
-.dice-prediction {
-    margin-bottom: 20px;
-}
-
-.prediction-label {
-    text-align: center;
-    margin-bottom: 15px;
-    font-size: 16px;
-    color: var(--text-secondary);
-}
-
-.dice-buttons {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-}
-
-.dice-bet-btn {
-    background: var(--card-bg);
-    border: 2px solid var(--bg-secondary);
-    color: var(--text-primary);
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.dice-bet-btn:hover {
-    background: var(--accent);
-    color: white;
-    border-color: var(--accent);
-    transform: translateY(-2px);
-}
-
-.dice-bet-btn.selected {
-    background: var(--accent);
-    color: white;
-    border-color: var(--accent);
-}
-
-/* Liquid Glass анимация переключения языка */
-.language-transition-overlay {
+.win-explosion {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.8) 0%, transparent 70%);
     pointer-events: none;
-    z-index: 99999;
-    overflow: hidden;
+    z-index: 10000;
+    animation: win-explosion 0.8s ease-out forwards;
 }
 
-.language-transition-overlay::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: radial-gradient(
-        circle,
-        rgba(59, 130, 246, 0.4) 0%,
-        rgba(139, 92, 246, 0.3) 30%,
-        rgba(236, 72, 153, 0.2) 60%,
-        transparent 100%
-    );
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    filter: blur(0px);
-}
-
-.language-transition-overlay::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        135deg,
-        rgba(59, 130, 246, 0.1) 0%,
-        rgba(139, 92, 246, 0.08) 50%,
-        rgba(236, 72, 153, 0.1) 100%
-    );
-    opacity: 0;
-    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(0px);
-}
-
-.language-transition-overlay.active::before {
-    width: 300vmax;
-    height: 300vmax;
-    filter: blur(80px);
-}
-
-.language-transition-overlay.active::after {
-    opacity: 1;
-    backdrop-filter: blur(20px) saturate(180%);
-}
-
-.language-transition-overlay.fade-out::before {
-    width: 0;
-    height: 0;
-    filter: blur(0px);
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.language-transition-overlay.fade-out::after {
-    opacity: 0;
-    backdrop-filter: blur(0px);
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Улучшенная анимация для карточек языка */
-.language-card {
-    position: relative;
-    overflow: hidden;
-}
-
-.language-card::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: radial-gradient(
-        circle,
-        rgba(59, 130, 246, 0.3),
-        transparent 70%
-    );
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    opacity: 0;
-}
-
-.language-card:active::before {
-    width: 300px;
-    height: 300px;
-    opacity: 1;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.language-card.active {
-    animation: language-select-pulse 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes language-select-pulse {
-    0% {
+/* Пульсация выигрышных слотов */
+@keyframes slot-win-pulse {
+    0%, 100% {
         transform: scale(1);
-        box-shadow: 0 6px 15px var(--shadow);
+        filter: brightness(1) drop-shadow(0 0 5px currentColor);
+    }
+    25% {
+        transform: scale(1.15) rotate(-5deg);
+        filter: brightness(1.5) drop-shadow(0 0 25px gold);
+    }
+    75% {
+        transform: scale(1.15) rotate(5deg);
+        filter: brightness(1.5) drop-shadow(0 0 25px gold);
+    }
+}
+
+.slot.win-animation .slot-inner {
+    animation: slot-win-pulse 0.6s ease-in-out 3;
+}
+
+.slot.win-animation {
+    border-color: #ffd700;
+    box-shadow: 
+        0 0 30px rgba(255, 215, 0, 1),
+        inset 0 0 20px rgba(255, 215, 0, 0.5);
+    animation: slot-glow 0.6s ease-in-out 3;
+}
+
+@keyframes slot-glow {
+    0%, 100% {
+        box-shadow: 
+            inset 0 4px 20px rgba(0, 0, 0, 0.9),
+            0 0 20px rgba(255, 215, 0, 0.6);
     }
     50% {
-        transform: scale(1.05);
         box-shadow: 
-            0 10px 30px var(--shadow),
-            0 0 40px rgba(59, 130, 246, 0.4),
-            inset 0 0 20px rgba(59, 130, 246, 0.2);
+            inset 0 4px 20px rgba(255, 215, 0, 0.3),
+            0 0 50px rgba(255, 215, 0, 1),
+            0 0 80px rgba(255, 215, 0, 0.8);
+    }
+}
+
+/* Летящие монеты к балансу */
+@keyframes coin-fly-to-balance {
+    0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        transform: translate(var(--tx), var(--ty)) scale(1.5) rotate(180deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.flying-coin {
+    position: fixed;
+    font-size: 40px;
+    pointer-events: none;
+    z-index: 9999;
+    filter: drop-shadow(0 0 15px gold);
+    animation: coin-fly-to-balance 1s ease-out forwards;
+}
+
+/* Улучшенное конфетти */
+@keyframes confetti-fall-enhanced {
+    0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) translateX(var(--x-end)) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+.confetti-enhanced {
+    position: fixed;
+    width: 12px;
+    height: 12px;
+    pointer-events: none;
+    z-index: 9999;
+    animation: confetti-fall-enhanced var(--fall-duration) ease-in forwards;
+    box-shadow: 0 0 10px currentColor;
+}
+
+/* Звездный дождь при больших выигрышах */
+@keyframes star-burst {
+    0% {
+        transform: translate(0, 0) scale(0) rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.star-burst {
+    position: fixed;
+    font-size: 30px;
+    pointer-events: none;
+    z-index: 9999;
+    filter: drop-shadow(0 0 20px gold);
+    animation: star-burst 1.5s ease-out forwards;
+}
+
+/* Текст выигрыша с эффектом */
+@keyframes win-text-appear {
+    0% {
+        transform: scale(0) rotate(-180deg);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.3) rotate(10deg);
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+.message.win {
+    animation: win-text-appear 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ===== АНИМАЦИЯ ВЗРЫВА В МИНАХ ===== */
+
+/* Основной взрыв */
+@keyframes mine-explode {
+    0% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    20% {
+        transform: scale(1.5);
+        filter: brightness(2);
+    }
+    40% {
+        transform: scale(1.2);
+        filter: brightness(1.5);
+    }
+    60% {
+        transform: scale(1.4);
+        filter: brightness(2);
     }
     100% {
         transform: scale(1);
-        box-shadow: 0 6px 15px var(--shadow);
+        filter: brightness(1);
     }
 }
 
-/* Ripple эффект при клике */
-.language-card .ripple {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.6);
-    transform: scale(0);
-    animation: ripple-animation 0.6s ease-out;
-    pointer-events: none;
+.mine-cell.mine {
+    animation: mine-explode 0.6s ease-out;
 }
 
-@keyframes ripple-animation {
-    to {
+/* Волна взрыва */
+@keyframes explosion-wave {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
         transform: scale(4);
         opacity: 0;
     }
 }
 
-/* Дополнительный liquid эффект для темной темы */
-[data-theme="dark"] .language-transition-overlay::before,
-[data-theme="oled"] .language-transition-overlay::before {
-    background: radial-gradient(
-        circle,
-        rgba(59, 130, 246, 0.5) 0%,
-        rgba(139, 92, 246, 0.4) 30%,
-        rgba(236, 72, 153, 0.3) 60%,
-        transparent 100%
-    );
+.explosion-wave {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 69, 0, 0.8) 0%, rgba(255, 0, 0, 0.4) 50%, transparent 70%);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 10;
+    animation: explosion-wave 0.6s ease-out forwards;
 }
 
-[data-theme="dark"] .language-card .ripple,
-[data-theme="oled"] .language-card .ripple {
-    background: rgba(59, 130, 246, 0.4);
+/* Частицы взрыва */
+@keyframes particle-explode {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+    }
+}
+
+.explosion-particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--particle-color);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9;
+    box-shadow: 0 0 10px var(--particle-color);
+    animation: particle-explode 0.8s ease-out forwards;
+}
+
+/* Тряска экрана */
+@keyframes screen-shake {
+    0%, 100% { transform: translate(0, 0); }
+    10% { transform: translate(-5px, 2px); }
+    20% { transform: translate(5px, -2px); }
+    30% { transform: translate(-5px, -2px); }
+    40% { transform: translate(5px, 2px); }
+    50% { transform: translate(-3px, 1px); }
+    60% { transform: translate(3px, -1px); }
+    70% { transform: translate(-3px, -1px); }
+    80% { transform: translate(3px, 1px); }
+    90% { transform: translate(-1px, 0px); }
+}
+
+.shake-screen {
+    animation: screen-shake 0.5s ease-in-out;
+}
+
+/* Красная вспышка */
+@keyframes red-flash {
+    0%, 100% { 
+        background: transparent;
+        opacity: 0;
+    }
+    50% { 
+        background: rgba(255, 0, 0, 0.5);
+        opacity: 1;
+    }
+}
+
+.red-flash-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9998;
+    animation: red-flash 0.6s ease-out;
+}
+
+/* Огненные частицы */
+@keyframes fire-particle {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+    }
+}
+
+.fire-particle {
+    position: absolute;
+    width: 6px;
+    height: 12px;
+    background: linear-gradient(to top, #ff4500, #ffd700);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    pointer-events: none;
+    z-index: 9;
+    filter: blur(1px);
+    box-shadow: 0 0 15px #ff4500;
+    animation: fire-particle 0.8s ease-out forwards;
+}
+
+/* Дым после взрыва */
+@keyframes smoke-rise {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translate(-50%, -150%) scale(2);
+        opacity: 0;
+    }
+}
+
+.smoke-particle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    background: radial-gradient(circle, rgba(100, 100, 100, 0.6) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 8;
+    animation: smoke-rise 1.5s ease-out forwards;
+}
+
+/* Эффект свечения при наведении на мину (до взрыва) */
+.mine-cell:hover:not(.revealed):not(.disabled):not(.mine) {
+    background: linear-gradient(135deg, #8a2be2 0%, #6a1bb2 100%);
+    transform: scale(1.05);
+    box-shadow: 
+        0 6px 15px rgba(138, 43, 226, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 0 20px rgba(138, 43, 226, 0.5);
+}
+
+/* Дополнительная анимация для выявленных алмазов */
+@keyframes diamond-shine {
+    0%, 100% {
+        filter: brightness(1);
+    }
+    50% {
+        filter: brightness(1.5) drop-shadow(0 0 15px #10b981);
+    }
+}
+
+.mine-cell.revealed {
+    animation: reveal-gem 0.4s ease-out, diamond-shine 2s ease-in-out infinite 0.4s;
+}
+
+/* Эффект радиальных волн при большом выигрыше */
+@keyframes radial-pulse {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+}
+
+.radial-pulse {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 300px;
+    height: 300px;
+    border: 5px solid gold;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9999;
+    animation: radial-pulse 1s ease-out forwards;
+}
+
+/* Анимация текста сообщения о выигрыше */
+@keyframes message-bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    25% {
+        transform: translateY(-10px);
+    }
+    50% {
+        transform: translateY(0);
+    }
+    75% {
+        transform: translateY(-5px);
+    }
+}
+
+.message.win {
+    animation: win-text-appear 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+               message-bounce 0.8s ease-in-out 0.6s;
+}
+
+/* Взрывная волна при выигрыше */
+@keyframes win-explosion {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(3);
+        opacity: 0;
+    }
+}
+
+.win-explosion {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.8) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 10000;
+    animation: win-explosion 0.8s ease-out forwards;
+}
+
+/* Пульсация выигрышных слотов */
+@keyframes slot-win-pulse {
+    0%, 100% {
+        transform: scale(1);
+        filter: brightness(1) drop-shadow(0 0 5px currentColor);
+    }
+    25% {
+        transform: scale(1.15) rotate(-5deg);
+        filter: brightness(1.5) drop-shadow(0 0 25px gold);
+    }
+    75% {
+        transform: scale(1.15) rotate(5deg);
+        filter: brightness(1.5) drop-shadow(0 0 25px gold);
+    }
+}
+
+.slot.win-animation .slot-inner {
+    animation: slot-win-pulse 0.6s ease-in-out 3;
+}
+
+.slot.win-animation {
+    border-color: #ffd700;
+    box-shadow: 
+        0 0 30px rgba(255, 215, 0, 1),
+        inset 0 0 20px rgba(255, 215, 0, 0.5);
+    animation: slot-glow 0.6s ease-in-out 3;
+}
+
+@keyframes slot-glow {
+    0%, 100% {
+        box-shadow: 
+            inset 0 4px 20px rgba(0, 0, 0, 0.9),
+            0 0 20px rgba(255, 215, 0, 0.6);
+    }
+    50% {
+        box-shadow: 
+            inset 0 4px 20px rgba(255, 215, 0, 0.3),
+            0 0 50px rgba(255, 215, 0, 1),
+            0 0 80px rgba(255, 215, 0, 0.8);
+    }
+}
+
+/* Летящие монеты к балансу */
+@keyframes coin-fly-to-balance {
+    0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        transform: translate(var(--tx), var(--ty)) scale(1.5) rotate(180deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.flying-coin {
+    position: fixed;
+    font-size: 40px;
+    pointer-events: none;
+    z-index: 9999;
+    filter: drop-shadow(0 0 15px gold);
+    animation: coin-fly-to-balance 1s ease-out forwards;
+}
+
+/* Улучшенное конфетти */
+@keyframes confetti-fall-enhanced {
+    0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) translateX(var(--x-end)) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+.confetti-enhanced {
+    position: fixed;
+    width: 12px;
+    height: 12px;
+    pointer-events: none;
+    z-index: 9999;
+    animation: confetti-fall-enhanced var(--fall-duration) ease-in forwards;
+    box-shadow: 0 0 10px currentColor;
+}
+
+/* Звездный дождь при больших выигрышах */
+@keyframes star-burst {
+    0% {
+        transform: translate(0, 0) scale(0) rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.star-burst {
+    position: fixed;
+    font-size: 30px;
+    pointer-events: none;
+    z-index: 9999;
+    filter: drop-shadow(0 0 20px gold);
+    animation: star-burst 1.5s ease-out forwards;
+}
+
+/* Текст выигрыша с эффектом */
+@keyframes win-text-appear {
+    0% {
+        transform: scale(0) rotate(-180deg);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.3) rotate(10deg);
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+.message.win {
+    animation: win-text-appear 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ===== АНИМАЦИЯ ВЗРЫВА В МИНАХ ===== */
+
+/* Основной взрыв */
+@keyframes mine-explode {
+    0% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    20% {
+        transform: scale(1.5);
+        filter: brightness(2);
+    }
+    40% {
+        transform: scale(1.2);
+        filter: brightness(1.5);
+    }
+    60% {
+        transform: scale(1.4);
+        filter: brightness(2);
+    }
+    100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+}
+
+.mine-cell.mine {
+    animation: mine-explode 0.6s ease-out;
+}
+
+/* Волна взрыва */
+@keyframes explosion-wave {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+.explosion-wave {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 69, 0, 0.8) 0%, rgba(255, 0, 0, 0.4) 50%, transparent 70%);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 10;
+    animation: explosion-wave 0.6s ease-out forwards;
+}
+
+/* Частицы взрыва */
+@keyframes particle-explode {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+    }
+}
+
+.explosion-particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--particle-color);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9;
+    box-shadow: 0 0 10px var(--particle-color);
+    animation: particle-explode 0.8s ease-out forwards;
+}
+
+/* Тряска экрана */
+@keyframes screen-shake {
+    0%, 100% { transform: translate(0, 0); }
+    10% { transform: translate(-5px, 2px); }
+    20% { transform: translate(5px, -2px); }
+    30% { transform: translate(-5px, -2px); }
+    40% { transform: translate(5px, 2px); }
+    50% { transform: translate(-3px, 1px); }
+    60% { transform: translate(3px, -1px); }
+    70% { transform: translate(-3px, -1px); }
+    80% { transform: translate(3px, 1px); }
+    90% { transform: translate(-1px, 0px); }
+}
+
+.shake-screen {
+    animation: screen-shake 0.5s ease-in-out;
+}
+
+/* Красная вспышка */
+@keyframes red-flash {
+    0%, 100% { 
+        background: transparent;
+        opacity: 0;
+    }
+    50% { 
+        background: rgba(255, 0, 0, 0.5);
+        opacity: 1;
+    }
+}
+
+.red-flash-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9998;
+    animation: red-flash 0.6s ease-out;
+}
+
+/* Огненные частицы */
+@keyframes fire-particle {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+    }
+}
+
+.fire-particle {
+    position: absolute;
+    width: 6px;
+    height: 12px;
+    background: linear-gradient(to top, #ff4500, #ffd700);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    pointer-events: none;
+    z-index: 9;
+    filter: blur(1px);
+    box-shadow: 0 0 15px #ff4500;
+    animation: fire-particle 0.8s ease-out forwards;
+}
+
+/* Дым после взрыва */
+@keyframes smoke-rise {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translate(-50%, -150%) scale(2);
+        opacity: 0;
+    }
+}
+
+.smoke-particle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    background: radial-gradient(circle, rgba(100, 100, 100, 0.6) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 8;
+    animation: smoke-rise 1.5s ease-out forwards;
+}
+
+/* Эффект свечения при наведении на мину (до взрыва) */
+.mine-cell:hover:not(.revealed):not(.disabled):not(.mine) {
+    background: linear-gradient(135deg, #8a2be2 0%, #6a1bb2 100%);
+    transform: scale(1.05);
+    box-shadow: 
+        0 6px 15px rgba(138, 43, 226, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 0 20px rgba(138, 43, 226, 0.5);
+}
+
+/* Дополнительная анимация для выявленных алмазов */
+@keyframes diamond-shine {
+    0%, 100% {
+        filter: brightness(1);
+    }
+    50% {
+        filter: brightness(1.5) drop-shadow(0 0 15px #10b981);
+    }
+}
+
+.mine-cell.revealed {
+    animation: reveal-gem 0.4s ease-out, diamond-shine 2s ease-in-out infinite 0.4s;
+}
+
+/* Эффект радиальных волн при большом выигрыше */
+@keyframes radial-pulse {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+}
+
+.radial-pulse {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 300px;
+    height: 300px;
+    border: 5px solid gold;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9999;
+    animation: radial-pulse 1s ease-out forwards;
+}
+
+/* Анимация текста сообщения о выигрыше */
+@keyframes message-bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    25% {
+        transform: translateY(-10px);
+    }
+    50% {
+        transform: translateY(0);
+    }
+    75% {
+        transform: translateY(-5px);
+    }
+}
+
+.message.win {
+    animation: win-text-appear 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+               message-bounce 0.8s ease-in-out 0.6s;
+}
+
+/* ===== НОВЫЕ МЕГА-ЭФФЕКТЫ ===== */
+
+/* Световые лучи из слотов */
+@keyframes light-beam {
+    0% {
+        transform: translateY(0) scaleY(0);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh) scaleY(3);
+        opacity: 0;
+    }
+}
+
+.light-beam {
+    position: fixed;
+    width: 100px;
+    height: 300px;
+    background: linear-gradient(to top, 
+        rgba(255, 215, 0, 0.8) 0%,
+        rgba(255, 215, 0, 0.4) 50%,
+        transparent 100%);
+    filter: blur(20px);
+    pointer-events: none;
+    z-index: 9998;
+    transform-origin: bottom center;
+    animation: light-beam 2s ease-out forwards;
+}
+
+/* Вспышки по углам */
+@keyframes corner-flash {
+    0%, 100% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.corner-flash {
+    position: fixed;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.8) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 9997;
+    animation: corner-flash 1s ease-out forwards;
+}
+
+.corner-flash.top-left { top: 0; left: 0; }
+.corner-flash.top-right { top: 0; right: 0; }
+.corner-flash.bottom-left { bottom: 0; left: 0; }
+.corner-flash.bottom-right { bottom: 0; right: 0; }
+
+/* Фейерверки */
+@keyframes firework-launch {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-300px);
+        opacity: 0;
+    }
+}
+
+@keyframes firework-burst {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(3);
+        opacity: 0;
+    }
+}
+
+.firework {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+.firework-trail {
+    width: 4px;
+    height: 40px;
+    background: linear-gradient(to top, var(--firework-color), transparent);
+    animation: firework-launch 1s ease-out forwards;
+}
+
+.firework-burst {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--firework-color) 0%, transparent 70%);
+    animation: firework-burst 0.8s ease-out forwards;
+}
+
+/* Парящие частицы света */
+@keyframes float-particle {
+    0% {
+        transform: translate(0, 0) scale(0);
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(1);
+        opacity: 0;
+    }
+}
+
+.float-particle {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: var(--particle-color);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    box-shadow: 0 0 20px var(--particle-color);
+    animation: float-particle 3s ease-out forwards;
+}
+
+/* Радужные волны */
+@keyframes rainbow-wave {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+.rainbow-wave {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 300px;
+    height: 300px;
+    border: 6px solid;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9997;
+    animation: rainbow-wave 1.5s ease-out forwards;
+}
+
+.rainbow-wave:nth-child(1) {
+    border-color: #ff0000;
+    animation-delay: 0s;
+}
+
+.rainbow-wave:nth-child(2) {
+    border-color: #ff7f00;
+    animation-delay: 0.1s;
+}
+
+.rainbow-wave:nth-child(3) {
+    border-color: #ffff00;
+    animation-delay: 0.2s;
+}
+
+.rainbow-wave:nth-child(4) {
+    border-color: #00ff00;
+    animation-delay: 0.3s;
+}
+
+.rainbow-wave:nth-child(5) {
+    border-color: #0000ff;
+    animation-delay: 0.4s;
+}
+
+.rainbow-wave:nth-child(6) {
+    border-color: #8b00ff;
+    animation-delay: 0.5s;
+}
+
+/* Звуковые волны */
+@keyframes sound-wave {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+}
+
+.sound-wave {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    border: 4px solid rgba(255, 215, 0, 0.8);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9996;
+    animation: sound-wave 0.8s ease-out forwards;
+}
+
+/* Баннер BIG WIN */
+@keyframes big-win-appear {
+    0% {
+        transform: scale(0) rotate(-180deg);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.2) rotate(10deg);
+        opacity: 1;
+    }
+    80% {
+        transform: scale(0.9) rotate(-5deg);
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+@keyframes big-win-pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.big-win-banner {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+    border: 6px solid #ff6b00;
+    border-radius: 30px;
+    padding: 30px 60px;
+    font-size: 72px;
+    font-weight: 900;
+    color: #8b0000;
+    text-shadow: 
+        3px 3px 0px #ff6b00,
+        6px 6px 0px rgba(0, 0, 0, 0.3),
+        0 0 30px #ffd700;
+    pointer-events: none;
+    z-index: 10001;
+    box-shadow: 
+        0 0 60px rgba(255, 215, 0, 1),
+        inset 0 0 30px rgba(255, 255, 255, 0.5);
+    animation: big-win-appear 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards,
+               big-win-pulse 1s ease-in-out 1s infinite;
+}
+
+@keyframes big-win-shine {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 200%;
+    }
+}
+
+.big-win-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.8), 
+        transparent);
+    transform: skewX(-20deg);
+    animation: big-win-shine 2s ease-in-out infinite;
+}
+
+/* Счетчик монет */
+@keyframes coin-counter {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes coin-count-up {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+}
+
+.coin-counter {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 96px;
+    font-weight: 900;
+    color: #ffd700;
+    text-shadow: 
+        4px 4px 0px #ff6b00,
+        8px 8px 0px rgba(0, 0, 0, 0.3),
+        0 0 40px #ffd700;
+    pointer-events: none;
+    z-index: 10000;
+    animation: coin-counter 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+.coin-counter-digit {
+    display: inline-block;
+    animation: coin-count-up 0.5s ease-out forwards;
+}
+
+/* Вращающиеся кольца */
+@keyframes ring-rotate {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg) scale(0);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg) scale(2);
+        opacity: 0;
+    }
+}
+
+.rotating-ring {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 300px;
+    height: 300px;
+    border: 4px dashed #ffd700;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9995;
+    animation: ring-rotate 2s linear forwards;
+}
+
+/* Золотой дождь */
+@keyframes gold-rain {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.gold-rain {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9996;
+    box-shadow: 0 0 20px #ffd700;
+    animation: gold-rain var(--duration) linear forwards;
+}
+
+/* Спиральные искры */
+@keyframes spiral-spark {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg) translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(var(--rotation)) translateX(200px);
+        opacity: 0;
+    }
+}
+
+.spiral-spark {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    background: var(--spark-color);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9997;
+    box-shadow: 0 0 15px var(--spark-color);
+    animation: spiral-spark 2s ease-out forwards;
+}
+
+/* Эффект "матрицы" из монет */
+@keyframes matrix-coin {
+    0% {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
+
+.matrix-coin {
+    position: fixed;
+    font-size: 24px;
+    pointer-events: none;
+    z-index: 9995;
+    animation: matrix-coin var(--duration) linear forwards;
+    text-shadow: 0 0 10px #ffd700;
+}
+
+/* Пульсирующий фон */
+@keyframes background-pulse {
+    0%, 100% {
+        background-color: transparent;
+    }
+    50% {
+        background-color: rgba(255, 215, 0, 0.1);
+    }
+}
+
+.win-background-pulse {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9994;
+    animation: background-pulse 1s ease-in-out 3;
+}
+
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+    .big-win-banner {
+        font-size: 48px;
+        padding: 20px 40px;
+    }
+    
+    .coin-counter {
+        font-size: 64px;
+    }
+    
+    .light-beam {
+        width: 60px;
+    }
+    
+    .corner-flash {
+        width: 150px;
+        height: 150px;
+    }
+}
+
+.big-win-effect-wrapper {
+    position: fixed;
+    top: 18%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10010;
+    pointer-events: none;
+}
+
+.big-win-effect-wrapper .big-win-banner {
+    position: static !important;
+    margin-bottom: 18px;
+    top: unset;
+    left: unset;
+    transform: none;
+    z-index: auto;
+}
+
+.big-win-effect-wrapper .coin-counter {
+    position: static !important;
+    margin: 0 !important;
+    font-size: 60px !important;
+    z-index: auto;
+}
+
+@media (max-width: 768px) {
+    .big-win-effect-wrapper .big-win-banner {
+        font-size: 36px !important;
+        padding: 12px 20px !important;
+    }
+    .big-win-effect-wrapper .coin-counter {
+        font-size: 34px !important;
+    }
+}
+
+input.bet-amount {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    width: 72px;
+    min-width: 56px;
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 900;
+    border: none;
+    outline: none;
+    background: none;
+    color: #ffd700;
+    text-shadow: 0 0 16px #ffd700, 0 0 2px #fff;
+    box-shadow: none;
+    transition: box-shadow .2s;
+    margin: 0 8px;
+}
+input.bet-amount::-webkit-outer-spin-button,
+input.bet-amount::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input.bet-amount[type=number] {
+    appearance: textfield;
+    -moz-appearance: textfield;
 }
